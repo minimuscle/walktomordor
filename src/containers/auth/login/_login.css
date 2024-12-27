@@ -1,0 +1,8 @@
+.Login {
+  background-color: var(--mantine-color-gray-1);
+
+  .Card {
+    max-width: 350px;
+    width: 100%;
+  }
+}
