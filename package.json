@@ -27,6 +27,7 @@
     "@mantine/notifications": "^7.15.2",
     "@supabase/supabase-js": "^2.47.10",
     "@tanstack/react-query": "^5.62.10",
+    "@tanstack/react-query-devtools": "^5.62.11",
     "@tanstack/react-router": "^1.92.6",
     "@tanstack/router-devtools": "^1.92.6",
     "react": "^18.3.1",

@@ -1,7 +1,10 @@
-import { Burger, Divider, Drawer, Flex, Group, Menu, NavLink, Stack, Text } from "@mantine/core"
+import { Burger, Button, Divider, Drawer, Flex, Group, Menu, NavLink, Stack, Text, Title } from "@mantine/core"
 import "./_dashboard.css"
 import { Link } from "@tanstack/react-router"
 import { useDisclosure } from "@mantine/hooks"
+import Hobbit from "../../assets/images/Hobbit.png"
+import { getUserData } from "./queries/getUserData"
+import { getFellowship } from "./queries/getFellowShip"
 
 /******************************************************************
  *  COMPONENT START                                               *
@@ -9,6 +12,18 @@ import { useDisclosure } from "@mantine/hooks"
 export function Dashboard() {
   /**********  HOOKS  **********/
   const [opened, { toggle, close }] = useDisclosure()
+  const { data: user_profile } = getUserData.useQuery()
+  const { data: fellowship } = getFellowship.useQuery({
+    distanceData: user_profile?.distance,
+    distance_type: getDistanceType(),
+  })
+
+  function getDistanceType(): "Kilometres" | "Miles" | undefined {
+    if (!user_profile) return
+    return (user_profile.distance_type.charAt(0).toUpperCase() + user_profile.distance_type.slice(1) + "s") as
+      | "Kilometres"
+      | "Miles"
+  }
 
   /*********  RENDER  *********/
   return (
@@ -36,6 +51,21 @@ export function Dashboard() {
           </Link>
         </Stack>
       </Drawer>
+
+      <Stack align="center" ta="center">
+        <Title order={1}>Walk to Mount Doom</Title>
+        <Text size="xl">Current Location:</Text>
+        <Title order={2}>{fellowship?.Location}</Title>
+        <img src={Hobbit} alt="Hobbit" className="Image" />
+        <Text size="xl">Distance Travelled:</Text>
+        {user_profile && (
+          <Title order={2}>
+            {user_profile.distance} {getDistanceType()}
+          </Title>
+        )}
+        <Text size="xl">{fellowship?.Note}</Text>
+        <Button>Update Distance</Button>
+      </Stack>
     </div>
   )
 }
