@@ -4,7 +4,7 @@ import { Link } from "@tanstack/react-router"
 import { useDisclosure } from "@mantine/hooks"
 import Hobbit from "../../assets/images/Hobbit.png"
 import { getUserData } from "./queries/getUserData"
-import { getFellowship } from "./queries/getFellowShip"
+import { getFellowship } from "./queries/getFellowship"
 
 /******************************************************************
  *  COMPONENT START                                               *
