@@ -3,7 +3,7 @@ import { user } from "../../../api/user"
 
 const _useQuery = () => {
   return useQuery({
-    queryKey: ["getUserData"],
+    queryKey: ["user"],
     queryFn: () => user.GET.userProfile(),
   })
 }

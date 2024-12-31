@@ -1,11 +1,4 @@
 .Dashboard {
-  background-color: var(--mantine-color-gray-2);
-  padding: 20px;
-  min-height: 100dvh;
-
-  .Menu {
-  }
-
   .Image {
     max-width: 500px;
     width: 90%;

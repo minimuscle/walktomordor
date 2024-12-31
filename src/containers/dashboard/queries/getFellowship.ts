@@ -3,10 +3,10 @@ import { distance } from "../../../api/distance"
 
 interface TQueryData {
   distanceData?: number
-  distance_type?: "Kilometres" | "Miles"
+  distance_type?: "kilometre" | "mile"
 }
 
-const _useQuery = ({ distanceData = 0, distance_type = "Kilometres" }: TQueryData) => {
+const _useQuery = ({ distanceData = 0, distance_type = "kilometre" }: TQueryData) => {
   return useQuery({
     queryKey: ["getUserData", distanceData, distance_type],
     queryFn: () => distance.GET.latest(distanceData, distance_type),

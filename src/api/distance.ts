@@ -3,7 +3,7 @@ import { Distance } from "./types"
 
 export const distance = {
   GET: {
-    latest: async (distance: number, distance_type: "Miles" | "Kilometres"): Promise<Distance.Fellowship> => {
+    latest: async (distance: number, distance_type: "kilometre" | "mile"): Promise<Distance.Fellowship> => {
       const { data } = await supabase
         .from("fellowship")
         .select("*")
