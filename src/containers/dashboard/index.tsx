@@ -46,7 +46,7 @@ export function Dashboard() {
             <Text size="lg">Account</Text>
           </Link>
           <Divider />
-          <Link to="/">
+          <Link to="/logout">
             <Text size="lg">Logout</Text>
           </Link>
         </Stack>

@@ -1,21 +1,21 @@
 import { Button, Card, Container, Flex, Text, TextInput, Title } from "@mantine/core"
 import "./_login.css"
 import { Link, redirect, useNavigate } from "@tanstack/react-router"
-import { useForm } from "react-hook-form"
+import { FieldValues, useForm } from "react-hook-form"
 import { auth } from "../../../api/auth"
+import { loginUser } from "./queries/loginUser"
 /******************************************************************
  *  COMPONENT START                                               *
  ******************************************************************/
 export function Login() {
   /**********  HOOKS  **********/
   const methods = useForm()
-  const navigate = useNavigate()
+  const { mutate: mutateLoginUser } = loginUser.useMutation()
 
   /********  FUNCTIONS  ********/
+  //TODO: Add zod for validation
   function handleSubmit(data: any) {
-    console.log(data)
-    auth.POST.login(data.email, data.password)
-    navigate({ to: "/" })
+    mutateLoginUser(data)
   }
 
   /*********  RENDER  *********/

@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router"
 import { useForm } from "react-hook-form"
 import { auth } from "../../../api/auth"
 import { user } from "../../../api/user"
+import { signupUser } from "./queries/signupUser"
 
 /******************************************************************
  *  COMPONENT START                                               *
@@ -11,13 +12,11 @@ import { user } from "../../../api/user"
 export function Signup() {
   /**********  HOOKS  **********/
   const methods = useForm()
+  const { mutate: mutateSignupUser } = signupUser.useMutation()
 
   /********  FUNCTIONS  ********/
   async function handleSubmit(data: any) {
-    console.log(data)
-    //auth.POST.signup(data.email, data.password)
-    const response = await user.POST.create({ username: data.username, display_name: data.display_name })
-    console.log(response)
+    await mutateSignupUser(data)
   }
 
   /*********  RENDER  *********/
