@@ -11,14 +11,20 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as PublicImport } from './routes/_public'
 import { Route as AppImport } from './routes/_app'
 import { Route as AppIndexImport } from './routes/_app/index'
 import { Route as AuthSignupImport } from './routes/_auth/signup'
 import { Route as AuthLogoutImport } from './routes/_auth/logout'
 import { Route as AuthLoginImport } from './routes/_auth/login'
-import { Route as AppUserUserIdImport } from './routes/_app/user.$userId'
+import { Route as PublicUserUserIdImport } from './routes/_public/user.$userId'
 
 // Create/Update Routes
+
+const PublicRoute = PublicImport.update({
+  id: '/_public',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AppRoute = AppImport.update({
   id: '/_app',
@@ -49,10 +55,10 @@ const AuthLoginRoute = AuthLoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AppUserUserIdRoute = AppUserUserIdImport.update({
+const PublicUserUserIdRoute = PublicUserUserIdImport.update({
   id: '/user/$userId',
   path: '/user/$userId',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => PublicRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -64,6 +70,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AppImport
+      parentRoute: typeof rootRoute
+    }
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof PublicImport
       parentRoute: typeof rootRoute
     }
     '/_auth/login': {
@@ -94,12 +107,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexImport
       parentRoute: typeof AppImport
     }
-    '/_app/user/$userId': {
-      id: '/_app/user/$userId'
+    '/_public/user/$userId': {
+      id: '/_public/user/$userId'
       path: '/user/$userId'
       fullPath: '/user/$userId'
-      preLoaderRoute: typeof AppUserUserIdImport
-      parentRoute: typeof AppImport
+      preLoaderRoute: typeof PublicUserUserIdImport
+      parentRoute: typeof PublicImport
     }
   }
 }
@@ -108,61 +121,74 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
-  AppUserUserIdRoute: typeof AppUserUserIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
-  AppUserUserIdRoute: AppUserUserIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface PublicRouteChildren {
+  PublicUserUserIdRoute: typeof PublicUserUserIdRoute
+}
+
+const PublicRouteChildren: PublicRouteChildren = {
+  PublicUserUserIdRoute: PublicUserUserIdRoute,
+}
+
+const PublicRouteWithChildren =
+  PublicRoute._addFileChildren(PublicRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '': typeof AppRouteWithChildren
+  '': typeof PublicRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/logout': typeof AuthLogoutRoute
   '/signup': typeof AuthSignupRoute
   '/': typeof AppIndexRoute
-  '/user/$userId': typeof AppUserUserIdRoute
+  '/user/$userId': typeof PublicUserUserIdRoute
 }
 
 export interface FileRoutesByTo {
+  '': typeof PublicRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/logout': typeof AuthLogoutRoute
   '/signup': typeof AuthSignupRoute
   '/': typeof AppIndexRoute
-  '/user/$userId': typeof AppUserUserIdRoute
+  '/user/$userId': typeof PublicUserUserIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_app': typeof AppRouteWithChildren
+  '/_public': typeof PublicRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/logout': typeof AuthLogoutRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_app/': typeof AppIndexRoute
-  '/_app/user/$userId': typeof AppUserUserIdRoute
+  '/_public/user/$userId': typeof PublicUserUserIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '' | '/login' | '/logout' | '/signup' | '/' | '/user/$userId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/logout' | '/signup' | '/' | '/user/$userId'
+  to: '' | '/login' | '/logout' | '/signup' | '/' | '/user/$userId'
   id:
     | '__root__'
     | '/_app'
+    | '/_public'
     | '/_auth/login'
     | '/_auth/logout'
     | '/_auth/signup'
     | '/_app/'
-    | '/_app/user/$userId'
+    | '/_public/user/$userId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
+  PublicRoute: typeof PublicRouteWithChildren
   AuthLoginRoute: typeof AuthLoginRoute
   AuthLogoutRoute: typeof AuthLogoutRoute
   AuthSignupRoute: typeof AuthSignupRoute
@@ -170,6 +196,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
+  PublicRoute: PublicRouteWithChildren,
   AuthLoginRoute: AuthLoginRoute,
   AuthLogoutRoute: AuthLogoutRoute,
   AuthSignupRoute: AuthSignupRoute,
@@ -186,6 +213,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_app",
+        "/_public",
         "/_auth/login",
         "/_auth/logout",
         "/_auth/signup"
@@ -194,8 +222,13 @@ export const routeTree = rootRoute
     "/_app": {
       "filePath": "_app.tsx",
       "children": [
-        "/_app/",
-        "/_app/user/$userId"
+        "/_app/"
+      ]
+    },
+    "/_public": {
+      "filePath": "_public.tsx",
+      "children": [
+        "/_public/user/$userId"
       ]
     },
     "/_auth/login": {
@@ -211,9 +244,9 @@ export const routeTree = rootRoute
       "filePath": "_app/index.tsx",
       "parent": "/_app"
     },
-    "/_app/user/$userId": {
-      "filePath": "_app/user.$userId.tsx",
-      "parent": "/_app"
+    "/_public/user/$userId": {
+      "filePath": "_public/user.$userId.tsx",
+      "parent": "/_public"
     }
   }
 }
